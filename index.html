@@ -1,0 +1,1141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Complete LatexDo documentation for users, developers, maintainers, the desktop app, local CLI, website, hosted editor, Cloudflare backend, release flow, and troubleshooting."
+    />
+    <title>LatexDo Documentation</title>
+    <link rel="canonical" href="https://docs.latexdo.org/" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="site.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="topbar">
+        <a class="brand" href="#top" aria-label="LatexDo documentation home">
+          <span class="brand-mark">LD</span>
+          <span>LatexDo Docs</span>
+        </a>
+        <label class="search-box">
+          <span class="visually-hidden">Search docs</span>
+          <input id="docs-search" type="search" placeholder="Search docs" />
+        </label>
+        <nav class="top-links" aria-label="Project links">
+          <a href="https://latexdo.org">Website</a>
+          <a href="https://editor.latexdo.org">Editor</a>
+          <a href="https://github.com/latexdo/latexdo">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="layout" id="top">
+      <aside class="sidebar" aria-label="Documentation navigation">
+        <h2>Contents</h2>
+        <nav class="toc">
+          <a class="toc-link" href="#overview">Overview</a>
+          <a class="toc-link" href="#quickstart">Quickstart</a>
+          <a class="toc-link" href="#products">Products</a>
+          <a class="toc-link" href="#user-guide">User Guide</a>
+          <a class="toc-link" href="#desktop">Desktop App</a>
+          <a class="toc-link" href="#web-editor">Web Editor</a>
+          <a class="toc-link" href="#cli">CLI</a>
+          <a class="toc-link" href="#website">Website</a>
+          <a class="toc-link" href="#architecture">Architecture</a>
+          <a class="toc-link" href="#api">Cloud API</a>
+          <a class="toc-link" href="#development">Development</a>
+          <a class="toc-link" href="#release">Release</a>
+          <a class="toc-link" href="#security">Security</a>
+          <a class="toc-link" href="#troubleshooting">Troubleshooting</a>
+          <a class="toc-link" href="#maintenance">Maintenance</a>
+        </nav>
+      </aside>
+
+      <main id="main" class="main">
+        <section class="hero">
+          <p class="eyebrow">Complete product and maintainer reference</p>
+          <h1>Everything needed to use, run, build, deploy, and maintain LatexDo.</h1>
+          <p class="lead">
+            LatexDo is a LaTeX writing system made of a desktop editor, a
+            local browser editor launched by a CLI, a public marketing and
+            downloads site, and a Cloudflare-hosted editor backend. These docs
+            explain the boundaries between those pieces and the workflows that
+            keep them in sync.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#quickstart">Start using LatexDo</a>
+            <a class="button" href="#development">Developer setup</a>
+            <a class="button" href="#api">Cloud API reference</a>
+          </div>
+        </section>
+
+        <section id="overview" class="section" data-search>
+          <p class="eyebrow">System Overview</p>
+          <h2>LatexDo at a glance</h2>
+          <p>
+            The core product lives in the `latexdo` repository. It contains the
+            Electron desktop shell, the shared React and Monaco editor frontend,
+            local file/project operations, LaTeX compilation through `latexmk`,
+            PDF preview, diagnostics, Git tools, importers, and the source for
+            the CLI and website assets that are synced downstream.
+          </p>
+
+          <div class="repo-map" aria-label="LatexDo repositories">
+            <div class="repo-node">
+              <strong>latexdo</strong>
+              <span>Main app, shared frontend, Electron APIs, CLI source,
+                website source, tests, packaging, release automation.</span>
+            </div>
+            <div class="repo-node">
+              <strong>latexdo.org</strong>
+              <span>Published static website, direct downloads, install script,
+                update metadata, privacy and legal pages.</span>
+            </div>
+            <div class="repo-node">
+              <strong>editor.latexdo.org</strong>
+              <span>Cloudflare Worker, static hosted editor frontend, Container
+                backend, cloud project API, compile API, sharing API.</span>
+            </div>
+            <div class="repo-node">
+              <strong>docs.latexdo.org</strong>
+              <span>This documentation site. It explains the product,
+                development process, operations, and API surface.</span>
+            </div>
+          </div>
+
+          <div class="callout">
+            <p>
+              Source of truth rule: product behavior starts in `latexdo`.
+              Published site/download files and hosted editor frontend builds
+              are downstream artifacts unless a repository-specific backend or
+              deployment file owns the behavior.
+            </p>
+          </div>
+        </section>
+
+        <section id="quickstart" class="section" data-search>
+          <p class="eyebrow">Quickstart</p>
+          <h2>Install or open the editor</h2>
+          <div class="grid three">
+            <article class="card">
+              <h3>Hosted web editor</h3>
+              <p>
+                Open `editor.latexdo.org` to create a cloud project in the
+                browser. The hosted editor stores projects by browser session
+                and uses the cloud API for files, sharing, compilation, and PDF
+                retrieval.
+              </p>
+              <p><a href="https://editor.latexdo.org">Open hosted editor</a></p>
+            </article>
+            <article class="card">
+              <h3>Local browser editor</h3>
+              <p>
+                Install the `latexdo` command. It clones the app source into
+                `~/.latexdo/app`, installs npm dependencies, starts Vite on
+                localhost, and opens a browser.
+              </p>
+              <p><a href="#cli">Read CLI docs</a></p>
+            </article>
+            <article class="card">
+              <h3>Desktop app</h3>
+              <p>
+                Use the desktop app when you need local folders, `latexmk`,
+                PDF preview, SyncTeX, terminal access, Git tools, DOCX import,
+                or Markdown import.
+              </p>
+              <p><a href="https://latexdo.org/downloads/">Downloads</a></p>
+            </article>
+          </div>
+
+          <div class="code-wrap">
+            <div class="code-title">
+              <span>Install the CLI</span>
+              <button class="copy" type="button" data-copy="#install-cli">Copy</button>
+            </div>
+            <pre><code id="install-cli">curl -fsSL https://latexdo.org/install.sh | bash
+latexdo doctor
+latexdo</code></pre>
+          </div>
+
+          <h3>Requirements</h3>
+          <ul>
+            <li>Node.js 20 or newer for development and the CLI-managed local editor.</li>
+            <li>Git and npm for the CLI cache/update flow.</li>
+            <li>A TeX distribution with `latexmk` for local desktop PDF compilation.</li>
+            <li>MacTeX on macOS, MiKTeX or TeX Live on Windows, TeX Live on Linux.</li>
+          </ul>
+        </section>
+
+        <section id="products" class="section" data-search>
+          <p class="eyebrow">Product Matrix</p>
+          <h2>Choose the right LatexDo surface</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Capability</th>
+                  <th>Desktop app</th>
+                  <th>Local browser editor</th>
+                  <th>Hosted editor</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Project storage</td>
+                  <td>Local folders selected through Electron dialogs.</td>
+                  <td>`localStorage` browser workspace.</td>
+                  <td>Container filesystem under `LATEXDO_DATA_ROOT`, keyed by browser session.</td>
+                </tr>
+                <tr>
+                  <td>LaTeX compilation</td>
+                  <td>`latexmk` with `pdflatex`, `xelatex`, or `lualatex`.</td>
+                  <td>Not available. Shows a desktop-required diagnostic.</td>
+                  <td>Cloud backend runs `latexmk` with no shell escape.</td>
+                </tr>
+                <tr>
+                  <td>PDF preview</td>
+                  <td>Available from local build output with PDF.js and SyncTeX.</td>
+                  <td>No generated PDF.</td>
+                  <td>Available after cloud compilation through the PDF API.</td>
+                </tr>
+                <tr>
+                  <td>Terminal</td>
+                  <td>Real project shell through `node-pty` with a pipe fallback.</td>
+                  <td>Placeholder only.</td>
+                  <td>Disabled.</td>
+                </tr>
+                <tr>
+                  <td>Git</td>
+                  <td>Status, stage, unstage, commit, diff, discard, history.</td>
+                  <td>Disabled with explanatory fallbacks.</td>
+                  <td>Disabled until auth and storage are hardened.</td>
+                </tr>
+                <tr>
+                  <td>DOCX and Markdown import</td>
+                  <td>Available through local import handlers.</td>
+                  <td>Disabled.</td>
+                  <td>Backend route exists, but the current cloud frontend adapter marks import disabled.</td>
+                </tr>
+                <tr>
+                  <td>Collaboration links</td>
+                  <td>Not available. Desktop tells users to use the hosted editor.</td>
+                  <td>Not available.</td>
+                  <td>Available through share tokens and presence heartbeats.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="user-guide" class="section" data-search>
+          <p class="eyebrow">User Guide</p>
+          <h2>Writing workflow</h2>
+          <p>
+            LatexDo is organized around a source-to-preview workflow. Open or
+            create a project, edit `.tex` and `.bib` files in Monaco, choose the
+            root `.tex` file and engine, compile, inspect diagnostics, then use
+            the PDF preview and side panels to resolve paper-level issues.
+          </p>
+
+          <div class="flow">
+            <div class="flow-step">
+              <strong>1. Open</strong>
+              <span>Create a starter project or open an existing folder.</span>
+            </div>
+            <div class="flow-step">
+              <strong>2. Edit</strong>
+              <span>Use Monaco with LaTeX completions, labels, citations, and file tabs.</span>
+            </div>
+            <div class="flow-step">
+              <strong>3. Compile</strong>
+              <span>Run `latexmk`, read compiler output, and jump to diagnostics.</span>
+            </div>
+            <div class="flow-step">
+              <strong>4. Review</strong>
+              <span>Use citation, structure, notation, PDF, and rebuttal panels.</span>
+            </div>
+            <div class="flow-step">
+              <strong>5. Ship</strong>
+              <span>Export or use the generated PDF and project files.</span>
+            </div>
+          </div>
+
+          <h3>Editor and paper tools</h3>
+          <div class="grid two">
+            <article class="card">
+              <h3>LaTeX intelligence</h3>
+              <p>
+                The editor builds an index from project `.tex` and `.bib` files
+                for completions, labels, bibliography entries, citation commands,
+                and project-aware analysis.
+              </p>
+              <div class="tag-list">
+                <span class="tag green">Labels</span>
+                <span class="tag green">BibTeX</span>
+                <span class="tag green">Completions</span>
+              </div>
+            </article>
+            <article class="card">
+              <h3>Diagnostics</h3>
+              <p>
+                Compiler diagnostics are parsed from `latexmk` output and
+                enriched with source context. Additional checks inspect structure,
+                citations, conference rules, reproducibility, acronyms, notation,
+                and PDF compliance.
+              </p>
+              <div class="tag-list">
+                <span class="tag amber">Error Doctor</span>
+                <span class="tag amber">PDF compliance</span>
+                <span class="tag amber">Conference checks</span>
+              </div>
+            </article>
+            <article class="card">
+              <h3>Review and rebuttal</h3>
+              <p>
+                Reviewer mode can create anchored review threads. Rebuttal mode
+                tracks reviewer comments, author answers, manuscript changes,
+                and can generate a rebuttal letter from tracked items.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Creation helpers</h3>
+              <p>
+                LatexDo includes a TikZ canvas, table-to-TikZ generation,
+                equation and notation helpers, citation stubs, project search,
+                history snapshots, and import helpers.
+              </p>
+            </article>
+          </div>
+
+          <h3>Default analysis checks</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tool</th>
+                  <th>What it checks</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Conference checker</td>
+                  <td>Margins, font size, abstract length, keywords, figure/table references, bibliography style, page limit, author information, anonymous review, image resolution, embedded fonts, compiler suitability.</td>
+                </tr>
+                <tr>
+                  <td>Citation assistant</td>
+                  <td>Missing citations, unused BibTeX entries, duplicate references, broken links, citation key suggestions, metadata gaps, old citations.</td>
+                </tr>
+                <tr>
+                  <td>Structure assistant</td>
+                  <td>Abstract shape, introduction structure, related-work length, reproducibility in methods, results discussion, conclusion claims.</td>
+                </tr>
+                <tr>
+                  <td>Reproducibility</td>
+                  <td>Code links, dataset links, license mentions, hyperparameters, hardware details, random seeds, evaluation metrics.</td>
+                </tr>
+                <tr>
+                  <td>PDF compliance</td>
+                  <td>Page count, unreferenced figures, uncited citations, citation-free sections, Type 3 fonts, abstract word count.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="desktop" class="section" data-search>
+          <p class="eyebrow">Desktop App</p>
+          <h2>Native local editing and compilation</h2>
+          <p>
+            The desktop app is an Electron shell around the shared React
+            frontend. It exposes a secure preload API at `window.latexdo` and a
+            terminal API at `window.terminalApi`. The renderer never reaches
+            directly into Node APIs; project operations go through IPC handlers
+            in `electron/main.ts`.
+          </p>
+
+          <h3>Local compile behavior</h3>
+          <p>
+            `electron/compiler.ts` searches for `latexmk`, preferring common
+            macOS paths such as `/Library/TeX/texbin/latexmk`. It creates an
+            isolated build directory under `.latexdo/build/job-<uuid>`, runs
+            `latexmk`, enables SyncTeX, uses `-file-line-error` and
+            `-halt-on-error`, then returns a `CompileResult`.
+          </p>
+
+          <div class="code-wrap">
+            <div class="code-title">
+              <span>Desktop compile command shape</span>
+              <button class="copy" type="button" data-copy="#desktop-compile">Copy</button>
+            </div>
+            <pre><code id="desktop-compile">latexmk -pdf|-xelatex|-lualatex \
+  -g \
+  -synctex=1 \
+  -interaction=nonstopmode \
+  -file-line-error \
+  -halt-on-error \
+  -outdir=.latexdo/build/job-&lt;uuid&gt; \
+  main.tex</code></pre>
+          </div>
+
+          <h3>Desktop-only capabilities</h3>
+          <ul>
+            <li>Open local folders and read/write real files.</li>
+            <li>Run `latexmk` with local TeX packages and fonts.</li>
+            <li>Read generated PDFs and use SyncTeX forward/backward jumps.</li>
+            <li>Use a real terminal in the project directory.</li>
+            <li>Inspect Git status, stage/unstage, commit, diff, discard, and history.</li>
+            <li>Import DOCX and Markdown through desktop import handlers.</li>
+            <li>Use local spellchecking and optional LanguageTool-compatible proofreading.</li>
+          </ul>
+
+          <h3>Desktop build commands</h3>
+          <div class="code-wrap">
+            <div class="code-title">
+              <span>Develop and package</span>
+              <button class="copy" type="button" data-copy="#desktop-commands">Copy</button>
+            </div>
+            <pre><code id="desktop-commands">npm install
+npm run dev
+npm run typecheck
+npm test
+npm run build
+npm run package
+npm run dist</code></pre>
+          </div>
+        </section>
+
+        <section id="web-editor" class="section" data-search>
+          <p class="eyebrow">Web Editor</p>
+          <h2>Browser, local, and cloud runtime modes</h2>
+          <p>
+            The shared frontend installs browser APIs when Electron does not
+            provide `window.latexdo`. The runtime is selected by
+            `VITE_LATEXDO_RUNTIME`. Without the cloud flag, the editor uses a
+            browser workspace stored in `localStorage`. With `cloud`, it uses
+            HTTP APIs served by `editor.latexdo.org`.
+          </p>
+
+          <div class="grid two">
+            <article class="card">
+              <h3>Browser runtime</h3>
+              <p>
+                Stores projects in `latexdo.browser.workspace.v1` inside
+                `localStorage`. It supports basic file and folder operations
+                but cannot compile, run a shell, use Git, or import documents.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Cloud runtime</h3>
+              <p>
+                Stores session, client, and share token IDs in `localStorage`.
+                It sends `x-latexdo-session`, `x-latexdo-client`, and
+                `x-latexdo-client-name` headers to the backend.
+              </p>
+            </article>
+          </div>
+
+          <h3>Cloudflare hosting</h3>
+          <p>
+            The `editor.latexdo.org` repository deploys a Cloudflare Worker
+            named `editor-latexdo-org`. Static assets come from `dist/`, and
+            all `/api/*` requests are proxied to a Cloudflare Container running
+            the Fastify backend. The Container image is built from `Dockerfile`
+            and includes Node 22, `latexmk`, Pandoc, and TeX Live packages.
+          </p>
+
+          <div class="diagram">
+            <div class="flow">
+              <div class="flow-step">
+                <strong>Browser</strong>
+                <span>Loads hosted React/Monaco frontend.</span>
+              </div>
+              <div class="flow-step">
+                <strong>Worker</strong>
+                <span>Serves assets and routes `/api/*`.</span>
+              </div>
+              <div class="flow-step">
+                <strong>Container</strong>
+                <span>Runs Fastify, Pandoc, `latexmk`, and TeX Live.</span>
+              </div>
+              <div class="flow-step">
+                <strong>Session data</strong>
+                <span>Stores projects under `LATEXDO_DATA_ROOT`.</span>
+              </div>
+              <div class="flow-step">
+                <strong>PDF output</strong>
+                <span>Returns compile logs, diagnostics, and PDFs.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout warning">
+            <p>
+              The current cloud backend has import routes for DOCX and Markdown,
+              but the current cloud frontend adapter intentionally reports those
+              features as unavailable. Treat them as backend-ready but not
+              exposed in the hosted UI.
+            </p>
+          </div>
+        </section>
+
+        <section id="cli" class="section" data-search>
+          <p class="eyebrow">Command Line</p>
+          <h2>The `latexdo` CLI</h2>
+          <p>
+            The CLI installs one shell command. Running `latexdo` keeps a cached
+            checkout of `https://github.com/latexdo/latexdo.git` in
+            `~/.latexdo/app`, updates it unless disabled, installs npm
+            dependencies when `package-lock.json` changes, starts Vite, and
+            opens the localhost URL.
+          </p>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Command</th>
+                  <th>Purpose</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>`latexdo` or `latexdo open`</td>
+                  <td>Start the local browser editor and open it.</td>
+                </tr>
+                <tr>
+                  <td>`latexdo update`</td>
+                  <td>Fetch the configured branch and install dependencies.</td>
+                </tr>
+                <tr>
+                  <td>`latexdo doctor`</td>
+                  <td>Print cache paths and check Git, Node, npm, curl, and `latexmk`.</td>
+                </tr>
+                <tr>
+                  <td>`latexdo path`</td>
+                  <td>Print the cached app path.</td>
+                </tr>
+                <tr>
+                  <td>`latexdo reset`</td>
+                  <td>Remove the cached app checkout and dependency state hash.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>CLI environment variables</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Variable</th>
+                  <th>Default</th>
+                  <th>Use</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>`LATEXDO_HOME`</td>
+                  <td>`~/.latexdo`</td>
+                  <td>Base cache directory.</td>
+                </tr>
+                <tr>
+                  <td>`LATEXDO_APP_DIR`</td>
+                  <td>`$LATEXDO_HOME/app`</td>
+                  <td>Checkout location for the app source.</td>
+                </tr>
+                <tr>
+                  <td>`LATEXDO_APP_REPO`</td>
+                  <td>`https://github.com/latexdo/latexdo.git`</td>
+                  <td>Source repository to clone and update.</td>
+                </tr>
+                <tr>
+                  <td>`LATEXDO_APP_BRANCH`</td>
+                  <td>`main`</td>
+                  <td>Branch to check out and reset to.</td>
+                </tr>
+                <tr>
+                  <td>`LATEXDO_HOST`</td>
+                  <td>`127.0.0.1`</td>
+                  <td>Local Vite bind host.</td>
+                </tr>
+                <tr>
+                  <td>`LATEXDO_PORT`</td>
+                  <td>`5173`</td>
+                  <td>Preferred local port. The CLI scans upward if busy.</td>
+                </tr>
+                <tr>
+                  <td>`LATEXDO_NO_OPEN`</td>
+                  <td>`0`</td>
+                  <td>Set to `1` to print the URL without opening a browser.</td>
+                </tr>
+                <tr>
+                  <td>`LATEXDO_SKIP_UPDATE`</td>
+                  <td>`0`</td>
+                  <td>Set to `1` to use the cached checkout as-is.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="website" class="section" data-search>
+          <p class="eyebrow">Website</p>
+          <h2>`latexdo.org` and downloads</h2>
+          <p>
+            The website repository is the published static site. The source
+            version also lives under `latexdo/website`. The main app sync script
+            builds the TypeScript website, copies the CLI install script and
+            command into the website, formats the generated assets, and rsyncs
+            the result to the website repository.
+          </p>
+
+          <h3>Website responsibilities</h3>
+          <ul>
+            <li>Marketing and product explanation at `latexdo.org`.</li>
+            <li>Hosted installer script at `https://latexdo.org/install.sh`.</li>
+            <li>CLI binary script at `https://latexdo.org/bin/latexdo`.</li>
+            <li>Direct downloads under `/downloads/`.</li>
+            <li>Download manifest at `/downloads/manifest.json`.</li>
+            <li>Checksums at `/downloads/SHA256SUMS.txt`.</li>
+            <li>Update feed at `/updates/latest.json`.</li>
+          </ul>
+
+          <h3>Download manifest shape</h3>
+          <div class="code-wrap">
+            <div class="code-title">
+              <span>Manifest fields</span>
+              <button class="copy" type="button" data-copy="#manifest-shape">Copy</button>
+            </div>
+            <pre><code id="manifest-shape">{
+  "schemaVersion": 1,
+  "product": "LatexDo",
+  "version": "0.1.0",
+  "publishedAt": "ISO timestamp",
+  "commit": "git sha",
+  "repository": "latexdo/latexdo",
+  "downloadsPage": "https://latexdo.org/downloads/",
+  "files": [
+    {
+      "id": "macos-arm64",
+      "platform": "macos",
+      "arch": "arm64",
+      "filename": "LatexDo-macos-arm64.dmg",
+      "sha256": "..."
+    }
+  ]
+}</code></pre>
+          </div>
+
+          <div class="callout warning">
+            <p>
+              The currently checked-in published website manifest has empty
+              `files` and null version fields. That is expected before release
+              artifacts are published by the release workflow.
+            </p>
+          </div>
+        </section>
+
+        <section id="architecture" class="section" data-search>
+          <p class="eyebrow">Architecture</p>
+          <h2>How the repositories fit together</h2>
+          <p>
+            `latexdo` is the active development repository. It can run as an
+            Electron desktop application or as a Vite web application. The
+            hosted editor is a cloud deployment of the same frontend built with
+            `VITE_LATEXDO_RUNTIME=cloud`, paired with a backend in
+            `editor.latexdo.org`.
+          </p>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Path</th>
+                  <th>Owner</th>
+                  <th>Purpose</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>`src/`</td>
+                  <td>`latexdo`</td>
+                  <td>React app, Monaco editor, panels, checks, runtime adapters, tests.</td>
+                </tr>
+                <tr>
+                  <td>`electron/`</td>
+                  <td>`latexdo`</td>
+                  <td>Electron main process, preload bridge, compiler, terminal, imports, SyncTeX.</td>
+                </tr>
+                <tr>
+                  <td>`cli/`</td>
+                  <td>`latexdo`</td>
+                  <td>Source for the published `latexdo` command and installer.</td>
+                </tr>
+                <tr>
+                  <td>`website/`</td>
+                  <td>`latexdo`</td>
+                  <td>Source for the published marketing/downloads website.</td>
+                </tr>
+                <tr>
+                  <td>`server/src/index.ts`</td>
+                  <td>`editor.latexdo.org`</td>
+                  <td>Fastify backend for cloud projects, files, imports, sharing, compile, PDF.</td>
+                </tr>
+                <tr>
+                  <td>`src/worker.ts`</td>
+                  <td>`editor.latexdo.org`</td>
+                  <td>Cloudflare Worker entry point that serves assets and proxies `/api/*`.</td>
+                </tr>
+                <tr>
+                  <td>`dist/`</td>
+                  <td>`editor.latexdo.org`</td>
+                  <td>Committed hosted editor frontend assets built from `latexdo`.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Data boundaries</h3>
+          <dl class="definition-list">
+            <div>
+              <dt>Desktop project ID</dt>
+              <dd>References a local folder selected through Electron. File access stays on the machine.</dd>
+            </div>
+            <div>
+              <dt>Browser project ID</dt>
+              <dd>References a project object in `localStorage`; suitable for draft editing, not durable storage.</dd>
+            </div>
+            <div>
+              <dt>Cloud project ID</dt>
+              <dd>References backend files under a session directory. Share tokens can grant another browser access to the same project.</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section id="api" class="section" data-search>
+          <p class="eyebrow">Cloud API</p>
+          <h2>Hosted editor backend reference</h2>
+          <p>
+            Cloud API requests are JSON unless the PDF route returns
+            `application/pdf`. Most routes require the `x-latexdo-session`
+            header. Collaboration-aware project routes can also accept
+            `x-latexdo-share-token`.
+          </p>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>Route</th>
+                  <th>Purpose</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>GET</td>
+                  <td>`/api/health`</td>
+                  <td>Returns `{ "ok": true }`.</td>
+                </tr>
+                <tr>
+                  <td>POST</td>
+                  <td>`/api/projects/open`</td>
+                  <td>Open the current session project or create one.</td>
+                </tr>
+                <tr>
+                  <td>POST</td>
+                  <td>`/api/projects`</td>
+                  <td>Create a project. Optional body: `{ "folderName": "Paper" }`.</td>
+                </tr>
+                <tr>
+                  <td>GET</td>
+                  <td>`/api/projects/:projectId/files`</td>
+                  <td>Return the project file tree.</td>
+                </tr>
+                <tr>
+                  <td>GET</td>
+                  <td>`/api/projects/:projectId/files/content?path=main.tex`</td>
+                  <td>Read a text file.</td>
+                </tr>
+                <tr>
+                  <td>PUT</td>
+                  <td>`/api/projects/:projectId/files/content?path=main.tex`</td>
+                  <td>Write a text file with `{ "content": "..." }`.</td>
+                </tr>
+                <tr>
+                  <td>PUT</td>
+                  <td>`/api/projects/:projectId/files/blob?path=figure.png`</td>
+                  <td>Write binary content with `{ "contentBase64": "..." }`.</td>
+                </tr>
+                <tr>
+                  <td>GET</td>
+                  <td>`/api/projects/:projectId/files/exists?path=main.tex`</td>
+                  <td>Return whether a path exists.</td>
+                </tr>
+                <tr>
+                  <td>POST</td>
+                  <td>`/api/projects/:projectId/files`</td>
+                  <td>Create a file or directory with `{ "relativePath": "...", "type": "file" }`.</td>
+                </tr>
+                <tr>
+                  <td>POST</td>
+                  <td>`/api/projects/:projectId/files/move`</td>
+                  <td>Move a file or directory.</td>
+                </tr>
+                <tr>
+                  <td>POST</td>
+                  <td>`/api/compile`</td>
+                  <td>Compile a project root file with `pdflatex`, `xelatex`, or `lualatex`.</td>
+                </tr>
+                <tr>
+                  <td>GET</td>
+                  <td>`/api/projects/:projectId/pdf?path=main.pdf`</td>
+                  <td>Return a generated PDF.</td>
+                </tr>
+                <tr>
+                  <td>POST</td>
+                  <td>`/api/import/:kind`</td>
+                  <td>Backend DOCX or Markdown import through Pandoc. `kind` must be `docx` or `markdown`.</td>
+                </tr>
+                <tr>
+                  <td>GET/POST</td>
+                  <td>`/api/projects/:projectId/share`</td>
+                  <td>Read or create a project share token.</td>
+                </tr>
+                <tr>
+                  <td>POST</td>
+                  <td>`/api/shares/:token/open`</td>
+                  <td>Open a shared project from a token.</td>
+                </tr>
+                <tr>
+                  <td>POST</td>
+                  <td>`/api/shares/:token/presence`</td>
+                  <td>Heartbeat collaborator presence and current file.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Compile request</h3>
+          <div class="code-wrap">
+            <div class="code-title">
+              <span>`POST /api/compile`</span>
+              <button class="copy" type="button" data-copy="#compile-request">Copy</button>
+            </div>
+            <pre><code id="compile-request">{
+  "projectId": "project-id",
+  "rootFile": "main.tex",
+  "engine": "pdflatex"
+}</code></pre>
+          </div>
+
+          <h3>Compile response</h3>
+          <div class="code-wrap">
+            <div class="code-title">
+              <span>`CompileResult`</span>
+              <button class="copy" type="button" data-copy="#compile-response">Copy</button>
+            </div>
+            <pre><code id="compile-response">{
+  "ok": true,
+  "pdfPath": "main.pdf",
+  "durationMs": 1240,
+  "output": "latexmk output",
+  "diagnostics": [],
+  "error": null
+}</code></pre>
+          </div>
+        </section>
+
+        <section id="development" class="section" data-search>
+          <p class="eyebrow">Development</p>
+          <h2>Set up the repositories</h2>
+          <p>
+            Use Node.js 20 or newer for the app, website, and cloud backend.
+            The app CI uses Node.js 22, so match that locally when debugging
+            build or native-module issues.
+          </p>
+
+          <div class="code-wrap">
+            <div class="code-title">
+              <span>Main app development</span>
+              <button class="copy" type="button" data-copy="#dev-main">Copy</button>
+            </div>
+            <pre><code id="dev-main">cd /Users/omar/Desktop/Github/latexdo
+npm install
+npm run dev</code></pre>
+          </div>
+
+          <div class="code-wrap">
+            <div class="code-title">
+              <span>Run only the web editor</span>
+              <button class="copy" type="button" data-copy="#dev-web">Copy</button>
+            </div>
+            <pre><code id="dev-web">cd /Users/omar/Desktop/Github/latexdo
+npm run web</code></pre>
+          </div>
+
+          <div class="code-wrap">
+            <div class="code-title">
+              <span>Cloud backend local development</span>
+              <button class="copy" type="button" data-copy="#dev-cloud">Copy</button>
+            </div>
+            <pre><code id="dev-cloud">cd /Users/omar/Desktop/Github/editor.latexdo.org
+npm install
+LATEXDO_DATA_ROOT=./storage/dev npm run server:dev</code></pre>
+          </div>
+
+          <h3>Quality commands</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Repository</th>
+                  <th>Commands</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>`latexdo`</td>
+                  <td>`npm run format:check`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:coverage`, `npm run build`.</td>
+                </tr>
+                <tr>
+                  <td>`latexdo.org`</td>
+                  <td>`npm run typecheck`, `npm run build`, then ensure compiled `assets/site.js` is committed.</td>
+                </tr>
+                <tr>
+                  <td>`editor.latexdo.org`</td>
+                  <td>`npm run typecheck`, `npm run build`, `npm run dev`, or `npm run server:dev`.</td>
+                </tr>
+                <tr>
+                  <td>`docs.latexdo.org`</td>
+                  <td>Open `index.html`; no build step is required.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Sync downstream repositories</h3>
+          <p>
+            Run `npm run sync:downstream` from the main app repository after
+            changes to CLI, website source, or hosted frontend behavior. The
+            script syncs `../latexdo-cli`, `../latexdo.org`, and
+            `../editor.latexdo.org` by default. Override target paths with
+            `LATEXDO_CLI_REPO`, `LATEXDO_WEBSITE_REPO`, and
+            `LATEXDO_EDITOR_REPO`.
+          </p>
+        </section>
+
+        <section id="release" class="section" data-search>
+          <p class="eyebrow">Release And Deploy</p>
+          <h2>Build, package, and publish LatexDo</h2>
+          <p>
+            The main app has two relevant workflows: `latexdo-ci` for validation
+            and installer artifacts, and `latexdo-release` for publishing direct
+            downloads to the website repository.
+          </p>
+
+          <h3>CI flow</h3>
+          <ul>
+            <li>Runs format, lint, typecheck, tests, coverage, and app build.</li>
+            <li>Packages an ad-hoc signed macOS Apple Silicon DMG.</li>
+            <li>Packages a Windows x64 NSIS installer.</li>
+            <li>Uploads `latexdo-installers-&lt;commit&gt;` with installers and checksums.</li>
+          </ul>
+
+          <h3>Release flow</h3>
+          <ul>
+            <li>Builds macOS Apple Silicon, macOS Intel, and Windows x64 artifacts.</li>
+            <li>Uses Developer ID signing and notarization if Apple secrets are present.</li>
+            <li>Falls back to ad-hoc signed macOS DMGs if signing secrets are missing.</li>
+            <li>Generates `/downloads/manifest.json`, `/downloads/SHA256SUMS.txt`, and `/updates/latest.json`.</li>
+            <li>Publishes to `latexdo/latexdo.github.io` when `LATEXDO_WEBSITE_TOKEN` is configured.</li>
+          </ul>
+
+          <h3>Required release secrets</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Secret</th>
+                  <th>Purpose</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>`LATEXDO_WEBSITE_TOKEN`</td>
+                  <td>Write access to publish website downloads.</td>
+                </tr>
+                <tr>
+                  <td>`MACOS_CERTIFICATE_P12`</td>
+                  <td>Developer ID certificate as base64 or configured package link.</td>
+                </tr>
+                <tr>
+                  <td>`MACOS_CERTIFICATE_PASSWORD`</td>
+                  <td>Password for the macOS signing certificate.</td>
+                </tr>
+                <tr>
+                  <td>`APPLE_API_KEY_P8`</td>
+                  <td>Base64-encoded Apple notarization `.p8` content.</td>
+                </tr>
+                <tr>
+                  <td>`APPLE_API_KEY_ID`, `APPLE_API_ISSUER`, `APPLE_TEAM_ID`</td>
+                  <td>Apple API and team metadata for notarization.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Cloud editor deploy</h3>
+          <p>
+            The current `editor.latexdo.org` repo is configured for Cloudflare
+            Workers Builds. Build command: `npm run build`. Deploy command:
+            `npx wrangler deploy`. If the build logs say Docker is unavailable,
+            push a prebuilt image and update the container image in
+            `wrangler.jsonc`.
+          </p>
+        </section>
+
+        <section id="security" class="section" data-search>
+          <p class="eyebrow">Security</p>
+          <h2>Trust boundaries and safeguards</h2>
+          <p>
+            LaTeX compilation can execute complex toolchains and consume large
+            amounts of CPU, memory, and disk. Treat compile services as
+            untrusted-input execution environments.
+          </p>
+
+          <div class="grid two">
+            <article class="card">
+              <h3>Desktop</h3>
+              <p>
+                The user runs compilation on their own machine against their own
+                local TeX distribution. Electron renderer access is mediated
+                through preload APIs and IPC handlers.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Cloud</h3>
+              <p>
+                The container runs as a non-root user and the cloud compile
+                command injects `-no-shell-escape` into engine commands. Compile
+                timeout is 45 seconds, and output buffer is capped at 10 MB.
+              </p>
+            </article>
+          </div>
+
+          <div class="callout danger">
+            <p>
+              Before a broad public cloud launch, add authentication, per-user
+              quotas, rate limits, abuse monitoring, reviewed memory/disk
+              limits, durable storage design, and a clear project retention
+              policy.
+            </p>
+          </div>
+
+          <h3>Path safety</h3>
+          <p>
+            Backend project paths are normalized to relative paths, reject `..`,
+            and are resolved under the project root before file operations.
+            Project IDs and session/share tokens are constrained to safe
+            character sets and lengths.
+          </p>
+        </section>
+
+        <section id="troubleshooting" class="section" data-search>
+          <p class="eyebrow">Troubleshooting</p>
+          <h2>Common problems</h2>
+          <div class="grid two">
+            <article class="card">
+              <h3>`latexmk` was not found</h3>
+              <p>
+                Install a TeX distribution and restart the app. On macOS,
+                MacTeX normally provides `/Library/TeX/texbin/latexmk`.
+              </p>
+            </article>
+            <article class="card">
+              <h3>CLI starts on a different port</h3>
+              <p>
+                The CLI checks the preferred port and scans upward when busy.
+                Set `LATEXDO_PORT` or pass `--port` to choose a different
+                starting point.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Cloud deploy is unauthorized</h3>
+              <p>
+                Add `CLOUDFLARE_ACCOUNT_ID` and a deploy-capable
+                `CLOUDFLARE_API_TOKEN` to the Cloudflare Worker build
+                configuration.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Downloads page is empty</h3>
+              <p>
+                The checked-in manifest can be empty before release artifacts
+                are published. Run the release workflow and ensure
+                `LATEXDO_WEBSITE_TOKEN` is configured.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Hosted editor Git buttons do not work</h3>
+              <p>
+                Git is intentionally disabled in the hosted editor. Use the
+                desktop app for repository operations.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Cloud compile times out</h3>
+              <p>
+                The backend compile timeout is 45 seconds. Reduce document
+                complexity, remove expensive TikZ/pgfplots passes, or move the
+                project to the desktop app for local compilation.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section id="maintenance" class="section" data-search>
+          <p class="eyebrow">Maintenance</p>
+          <h2>Keep docs accurate</h2>
+          <p>
+            Update these docs whenever a command, API route, runtime capability,
+            release artifact, or deployment requirement changes. The safest
+            maintenance pattern is to update docs in the same branch as the
+            product change, then verify that all documented commands still match
+            `package.json`, workflow files, and runtime adapters.
+          </p>
+
+          <h3>Documentation checklist</h3>
+          <ul>
+            <li>Check `latexdo/package.json` for command changes.</li>
+            <li>Check `electron/preload.cts` for desktop API changes.</li>
+            <li>Check `src/browserApi.ts` and `src/cloudApi.ts` for runtime boundaries.</li>
+            <li>Check `editor.latexdo.org/server/src/index.ts` for backend API changes.</li>
+            <li>Check `editor.latexdo.org/wrangler.jsonc` for deploy target changes.</li>
+            <li>Check `latexdo/.github/workflows/*.yml` for CI and release changes.</li>
+            <li>Check `latexdo/scripts/sync-downstream-repos.sh` for sync behavior.</li>
+          </ul>
+
+          <div class="callout">
+            <p>
+              This docs site is static and dependency-free. To preview it, open
+              `index.html` directly in a browser from the `docs.latexdo.org`
+              repository.
+            </p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <span>LatexDo documentation</span>
+        <span>Static docs for desktop, web, CLI, website, cloud, and release operations.</span>
+      </div>
+    </footer>
+  </body>
+</html>
