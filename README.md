@@ -20,3 +20,16 @@ sibling repositories:
 
 When product behavior changes, update the docs in the same change or immediately
 after syncing the downstream repositories.
+
+## Deploy
+
+Cloudflare Workers deployment is configured through `wrangler.jsonc`. Install
+dependencies once, then deploy with:
+
+```sh
+npm install
+npx wrangler deploy
+```
+
+Wrangler runs `npm run build` before publishing the static files from `dist/`.
+In non-interactive environments, set `CLOUDFLARE_API_TOKEN` before deploying.

@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "build": "tsc -p tsconfig.json && node scripts/build-dist.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
   },
   "devDependencies": {
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "wrangler": "^4.105.0"
   }
 }
