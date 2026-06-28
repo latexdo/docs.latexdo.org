@@ -1,35 +1,46 @@
-# LatexDo Docs
+# docs.latexdo.org
 
-This repository hosts the static documentation site for the LatexDo project at
-`docs.latexdo.org`.
+This repository hosts the public LatexDo documentation site at `https://docs.latexdo.org`. It is a static documentation site with TypeScript-powered browser behavior.
 
-The docs are static, with browser behavior authored in TypeScript. Edit
-`index.html`, `style.css`, and `src/site.ts`, then run:
+## Repository Role
+
+- Documents the LatexDo desktop app, local CLI, public website, hosted editor, release flow, and maintenance workflow.
+- Serves a static documentation site from `index.html`, `style.css`, and `site.js`.
+- Deploys to Cloudflare Workers assets through Wrangler.
+
+## Requirements
+
+- Node.js 20 or newer.
+- npm.
+- Wrangler for deploys and Worker previews.
+
+## Run Locally
 
 ```sh
 npm install
 npm run build
+python3 -m http.server 4173
 ```
 
-After that, open `index.html` in a browser. The content is based on these
-sibling repositories:
+Open `http://127.0.0.1:4173`. The build compiles `src/site.ts` to `site.js` and prepares `dist/` for Cloudflare deploys.
 
-- `/Users/omar/Desktop/Github/latexdo`
-- `/Users/omar/Desktop/Github/latexdo.org`
-- `/Users/omar/Desktop/Github/editor.latexdo.org`
+For a Wrangler preview:
 
-When product behavior changes, update the docs in the same change or immediately
-after syncing the downstream repositories.
+```sh
+npm run preview
+```
+
+## Common Commands
+
+```sh
+npm run build      # Compile TypeScript and prepare dist/.
+npm run typecheck  # Check TypeScript without emitting files.
+npm run preview    # Run Wrangler dev locally.
+npm run deploy     # Deploy with Wrangler.
+```
 
 ## Deploy
 
-Cloudflare Workers deployment is configured through `wrangler.jsonc`. Install
-dependencies once, then deploy with:
-
 ```sh
-npm install
 npx wrangler deploy
 ```
-
-Wrangler runs `npm run build` before publishing the static files from `dist/`.
-In non-interactive environments, set `CLOUDFLARE_API_TOKEN` before deploying.
