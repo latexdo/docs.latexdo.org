@@ -3,8 +3,15 @@
 This repository hosts the static documentation site for the LatexDo project at
 `docs.latexdo.org`.
 
-The docs are intentionally dependency-free: edit `index.html`, `style.css`, and
-`site.js`, then open `index.html` in a browser. The content is based on these
+The docs are static, with browser behavior authored in TypeScript. Edit
+`index.html`, `style.css`, and `src/site.ts`, then run:
+
+```sh
+npm install
+npm run build
+```
+
+After that, open `index.html` in a browser. The content is based on these
 sibling repositories:
 
 - `/Users/omar/Desktop/Github/latexdo`

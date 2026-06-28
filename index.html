@@ -7,6 +7,7 @@
       name="description"
       content="Complete LatexDo documentation for users, developers, maintainers, the desktop app, local CLI, website, hosted editor, Cloudflare backend, release flow, and troubleshooting."
     />
+    <meta name="color-scheme" content="light dark" />
     <title>LatexDo Documentation</title>
     <link rel="canonical" href="https://docs.latexdo.org/" />
     <link rel="stylesheet" href="style.css" />
@@ -25,6 +26,14 @@
           <span class="visually-hidden">Search docs</span>
           <input id="docs-search" type="search" placeholder="Search docs" />
         </label>
+        <div class="theme-toggle" role="group" aria-label="Theme">
+          <button class="theme-choice" type="button" data-theme-choice="white" aria-pressed="false">
+            White
+          </button>
+          <button class="theme-choice" type="button" data-theme-choice="black" aria-pressed="false">
+            Black
+          </button>
+        </div>
         <nav class="top-links" aria-label="Project links">
           <a href="https://latexdo.org">Website</a>
           <a href="https://editor.latexdo.org">Editor</a>
@@ -912,7 +921,7 @@ LATEXDO_DATA_ROOT=./storage/dev npm run server:dev</code></pre>
                 </tr>
                 <tr>
                   <td>`docs.latexdo.org`</td>
-                  <td>Open `index.html`; no build step is required.</td>
+                  <td>`npm run typecheck`, `npm run build`, then open `index.html`.</td>
                 </tr>
               </tbody>
             </table>
@@ -1122,7 +1131,8 @@ LATEXDO_DATA_ROOT=./storage/dev npm run server:dev</code></pre>
 
           <div class="callout">
             <p>
-              This docs site is static and dependency-free. To preview it, open
+              This docs site is static, with browser behavior authored in
+              TypeScript under `src/site.ts`. Run `npm run build`, then open
               `index.html` directly in a browser from the `docs.latexdo.org`
               repository.
             </p>

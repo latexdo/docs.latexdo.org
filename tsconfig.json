@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ES2020"],
+    "module": "none",
+    "noEmitOnError": true,
+    "outFile": "site.js",
+    "strict": true,
+    "target": "ES2020"
+  },
+  "include": ["src/site.ts"]
+}
